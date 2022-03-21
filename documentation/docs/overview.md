@@ -11,7 +11,7 @@ keywords:
 
 # IOTA Smart Contracts
 
-The IOTA Smart Contracts is a protocol that brings scalable and flexible smart contracts into the IOTA ecosystem. It allows anyone to spin up a smart contract blockchain and anchor it to the IOTA Tangle. Having many blockchains to anchor to the Tangle leads to a few advantages.
+The IOTA Smart Contracts is a protocol that brings scalable and flexible smart contracts into the IOTA ecosystem. It allows anyone to spin up a smart contract blockchain and anchor it to the IOTA Tangle, a design that offers a multiple advantages.
 
 ## ISC Advantages
 
