@@ -15,7 +15,7 @@ With IOTA Smart Contracts, anyone can start their own chain and invite others to
 
 Each chain has its own state and smart contracts that cause this state to change. As validators execute smart contracts, they tally these changes and write them into the chain. Each time they update the state, they collectively agree on a new state and commit to it by publishing its hash to Layer 1, the Tangle.
 
-Each Layer 2 chain is functionally equivalent to, say, Ethereum, but all chains can talk to Layer 1 and each other, making ISC a more intricate protocol.
+Each Layer 2 chain is functionally equivalent to, say, Ethereum, but all chains can communicate with Layer 1 and each other, making ISC a more intricate protocol.
 
 ![A diagram with multiple smart contract chains. Each is functionally equivalent to the Ethereum blockchain, but they also communicate to Layer 1 and each other.](/img/multichain.png "Click to see the full-size image.")
 

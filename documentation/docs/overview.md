@@ -19,7 +19,7 @@ The IOTA Smart Contracts is a protocol that brings scalable and flexible smart c
 
 Due to the ordered structure and execution time of a smart contract, a single blockchain can only handle so many transactions per second before it needs to decide on which transactions it needs to postpone until other blocks are produced, as there is no processing power available for them on that chain. This eventually results in high fees on many chains, and limited functionality. 
 
-As ISC allows many chains to be anchored to the IOTA Tangle and lets them communicate with each other, we can simply add additional chains once this becomes a problem. This results in lower fees over solutions that just use a single blockchain for all their smart contracts.
+As ISC allows many chains to be anchored to the IOTA Tangle and lets them communicate with each other, we can add additional chains once this becomes a problem. This results in lower fees over solutions that use a single blockchain for all their smart contracts.
 
 ### Custom Chains
 
@@ -39,4 +39,4 @@ Wasp is the node software that we have built to let you validate smart contracts
 
 ## Feedback
 
-We are very eager to receive your feedback about your experiences with the IOTA Smart Contracts Beta. You can use [this form](https://docs.google.com/forms/d/e/1FAIpQLSd4jcmLzCPUNDIijEwGzuWerO23MS0Jmgzszgs-D6_awJUWow/viewform) to share your developer experience with us. This feedback will help us improve the product in future releases.
+We are eager to receive your feedback about your experiences with the IOTA Smart Contracts Beta. You can use [this form](https://docs.google.com/forms/d/e/1FAIpQLSd4jcmLzCPUNDIijEwGzuWerO23MS0Jmgzszgs-D6_awJUWow/viewform) to share your developer experience with us. This feedback will help us improve the product in future releases.
