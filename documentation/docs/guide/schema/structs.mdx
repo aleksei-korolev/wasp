@@ -1,32 +1,24 @@
 ---
+description: You can use structs directly as a type in state storage definitions and the schema tool will automatically generate the proxy code to access it properly.
+image: /img/logo/WASP_logo_dark.png
 keywords:
 - functions
 - state
 - structures
 - storage
 - named fields
-description: You can use structs directly as a type in state storage definitions and the schema tool will automatically generate the proxy code to access it properly.
-image: /img/logo/WASP_logo_dark.png
+- how to
 ---
 import Tabs from "@theme/Tabs"
 import TabItem from "@theme/TabItem"
 
 # Structured Data Types
 
-The [schema tool](usage.mdx) allows you to define your own structured data types that are
-composed of the predefined WasmLib value data types. The tool will generate a struct with
-named fields according to the definition in the schema definition file, and also generate
-code to serialize and deserialize the structure to a byte array, so that it can be saved
-as a single unit of data, for example in state storage.
+The schema tool allows you to define your own structured data types. These types are composed of the predefined WasmLib value data types. The tool generates a struct with named fields according to the definition in the schema definition file, and also generates code to serialize and deserialize the structure to a byte array, so that it can be saved as a single unit of data.
 
-You can use structs directly as a type in state storage definitions and the schema tool
-will automatically generate the proxy code to access it properly.
+You can use structs as a type in state storage definitions and the schema tool will automatically generate the proxy code to access it.
 
-For example, let's say you are creating a `betting` smart contract. Then you would want to
-store information for each bet. The Bet structure could consist of the bet amount and
-time, the number of the item that was bet on, and the agent ID of the one who placed the
-bet. And you would keep track of all bets in state storage in an array of Bet structs.
-To do so, you would insert the following into the schema definition file:
+Say, you create a betting smart contract that needs to store information for each bet. The `Bet` structure consists of the bet amount and time, the number that we bet on, and the agent ID of the one who placed the bet. The smart contract keeps track of all bets in state storage in an array of `Bet` structs. For this smart contract, you need to modify the schema definition file as follows:
 
 <Tabs defaultValue="yaml"
       values={[
@@ -42,7 +34,7 @@ To do so, you would insert the following into the schema definition file:
     "Bet": {
       "amount": "Int64 // bet amount",
       "time": "Int64 // timestamp of this bet",
-      "number": "Int32 // number of item we bet on",
+      "number": "Int32 // number the we bet on",
       "better": "AgentID // Who placed this bet"
     }
   },
@@ -61,7 +53,7 @@ structs:
   Bet:
     amount: Int64 // bet amount
     time: Int64 // timestamp of this bet
-    number: Int32 // number of item we bet on
+    number: Int32 // number that we bet on
     better: AgentID // Who placed this bet
 state:
   bets: Bet[] // all bets made in this round
@@ -70,8 +62,7 @@ state:
 </TabItem>
 </Tabs>
 
-The schema tool will generate `types.xx` which contains the following code for the Bet
-struct:
+The schema tool will generate `types.xx` which contains the following code for the Bet struct:
 
 <Tabs defaultValue="go"
       groupId="language"
@@ -91,7 +82,7 @@ import "github.com/iotaledger/wasp/packages/wasmvm/wasmlib"
 type Bet struct {
     Amount int64             // bet amount
     Better wasmlib.ScAgentID // Who placed this bet
-    Number int32             // number of item we bet on
+    Number int32             // number that we bet on
     Time   int64             // timestamp of this bet
 }
 
@@ -293,8 +284,8 @@ export class MutableBet {
 </TabItem>
 </Tabs>
 
-Notice how the generated ImmutableBet and MutableBet proxies use the fromBytes() and
-toBytes() (de)serialization code to automatically transform byte arrays into Bet structs.
+Notice how the generated `ImmutableBet` and `MutableBet` proxies use the `fromBytes()` and
+`toBytes()` serialization code to automatically transform byte arrays into `Bet` structs.
 
 The generated code in `state.xx` that implements the state interface is shown here:
 
@@ -513,8 +504,4 @@ export class MutableBettingState extends wasmlib.ScMapID {
 </TabItem>
 </Tabs>
 
-The end result is an ImmutableBettingState and MutableBettingState structure that can
-directly interface to the state of the betting contract.
-
-In the next section we will look at how to make even more
-    [complex type definitions](typedefs.mdx).
+The end result is `ImmutableBettingState` and `MutableBettingState` that provide a type-safe interface to the state of the betting contract.

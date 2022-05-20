@@ -1,4 +1,6 @@
 ---
+description: You can add a typedefs section to the schema definition file, where you can define a single type name for a container type. This way you can easily create containers that contain container types.
+image: /img/logo/WASP_logo_dark.png
 keywords:
 - containers
 - types
@@ -6,29 +8,18 @@ keywords:
 - single type
 - array
 - schema definition file
-description: You can add a typedefs section to the schema definition file, where you can define a single type name for a container type. This way you can easily create containers that contain container types.
-image: /img/logo/WASP_logo_dark.png
+- how to
 ---
 import Tabs from "@theme/Tabs"
 import TabItem from "@theme/TabItem"
 
 # Type Definitions
 
-Since we allow nesting of [container types](../wasm_vm/proxies.mdx#container-proxies), it
-is a difficult to create proper declarations for such nested types. Especially because you
-can only indicate either a single type, or an array of single type, or a map of single
-type in a field definition.
+Since we allow nesting of [container types](../wasm_vm/proxies.mdx#container-proxies), it could become difficult to create proper declarations for such nested types, given that you can only indicate a single type, an array of single type, or a map of single type in a field definition.
 
-There is a simple solution to this problem. You can add a `typedefs` section to the
-schema definition file, where you can define a single type name for a container type. That
-way you can easily create containers that contain such container types. The schema tool
-will automatically generate the in-between proxy types necessary to make this work.
+To solve this problem we have introduced the `typedefs` section for schema definitions. There you can define a type name for a container which you could use in function and variable definitions and within other containers.
 
-To keep it at the `betting` smart contract from [the previous section](structs.mdx),
-imagine you want to keep track of all betting rounds. Since a betting round contains an
-array of all bets in a round, if it weren't for typedefs you could not define it easily.
-
-Instead, now you add the following to your schema definition file:
+Extending the example from [the previous section](structs.mdx), imagine a similar smart contract that also needs to keep track of all betting rounds. Each `BettingRound` would contain an array of `Bet` values, something that we can define in the `typedefs` section:
 
 <Tabs defaultValue="yaml"
       values={[
@@ -210,8 +201,8 @@ export class ArrayOfMutableBet {
 </TabItem>
 </Tabs>
 
-Note how ImmutableBettingRound and MutableBettingRound type aliases are created for the
-types ArrayOfImmutableBet and ArrayOfMutableBet. These are subsequently used in the state
+Note how `ImmutableBettingRound` and `MutableBettingRound` type aliases are created for the
+types `ArrayOfImmutableBet` and `ArrayOfMutableBet`. These are subsequently used in the state
 definition in `state.xx`:
 
 <Tabs defaultValue="go"
@@ -466,10 +457,4 @@ export class MutableBettingState extends wasmlib.ScMapID {
 </TabItem>
 </Tabs>
 
-Notice how the rounds() member function returns a proxy to an array of BettingRound.
-Which in turn is an array of Bet. So, the desired result has been achieved. And every
-access step along the way only allows you to take the path laid out which is checked at
-compile-time.
-
-In the next section we will explore how the schema tool generates a proxy interface for
-mutable [states](state.mdx).
+Notice how the `rounds()` member function returns a proxy to an array of `BettingRound`, which in turn contains arrays of `Bet`. You cannot interpret an array of betting rounds as an array of bets on accident, as your access to every level within this hierarchy is checked during the compile time.

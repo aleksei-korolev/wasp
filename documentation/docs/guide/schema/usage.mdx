@@ -1,4 +1,6 @@
 ---
+description: The `schema` tool will assist in creating a smart contract unobtrusively as possible.
+image: /img/logo/WASP_logo_dark.png
 keywords:
 - functions
 - schema tool
@@ -8,44 +10,44 @@ keywords:
 - init
 - json
 - yml
-description: The `schema` tool will assist in creating a smart contract unobtrusively as possible.
-image: /img/logo/WASP_logo_dark.png
+- usage
+- how to
 ---
 import Tabs from "@theme/Tabs"
 import TabItem from "@theme/TabItem"
 
 # Using the Schema Tool
 
-We tried to make the creation of smart contracts as simple as possible. The `schema`
-tool will assist you along the way as unobtrusively as possible. This section will walk you
-through the steps to create a new smart contract from scratch.
+This section explains how to create a smart contract from scratch.
 
-First, you need to decide on a central folder where you want to keep all your smart
-contracts. Each smart contract you create will be maintained in a separate subfolder in
-this folder. We will use certain naming conventions that the schema tool expects
-throughout this section. First we will select a camel case name for our smart contract.
-For our example, `MySmartContract`.
+## Naming Conventions
 
-Once you know what your smart contract will be named, it is time to set up your subfolder.
-Simply navigate to the central smart contract folder, and run the schema tool's
-initialization function:
+The schema tool expects you to follow a few naming conventions:
+
+* For smart contract names, use PascalCase like in `MySmartContract`.
+* For types, use PascalCase like in `MyType`.
+* For variable names, use camelCase like in `myVariable`.
+* For function names, use camelCase like in `myFunction`.
+
+Note that the schema tool will still generate folders and files with their names in lowercase. 
+
+## Creating a New Schema
+
+You need to create a folder that would contain all your smart contracts, each in its own subfolder. Navigate to that folder and initialize your first smart contract: 
 
 ```shell
 schema -init MySmartContract
 ```
 
-This command will create a subfolder named `mysmartcontract` and generate an initial YAML
-schema definition file inside this subfolder. Because a YAML file is easier to read and
-edit manually, YAML is the default configuration file over JSON. If you prefer to use JSON
-instead, you can run the schema tool like this:
+This command generates a basic schema for a smart contract with a name `MySmartContract`. It creates a new `mysmartcontract` subfolder and a basic YAML schema definition file within it. 
+
+If you prefer JSON over YAML, you can specify it through the `-type` optional parameter:
 
 ```shell
 schema -init MySmartContract -type=json
 ```
 
-Note that the generated subfolder name is all lower case. This is due to best practices
-for package names in most languages. The generated schema definition file looks like
-this:
+The generated schema definition file looks like this:
 
 <Tabs defaultValue="yaml"
       values={[
@@ -116,21 +118,11 @@ views:
 </TabItem>
 </Tabs>
 
-The schema definition file has been pre-populated with all sections that you could need,
-and some functions that allow you to maintain the ownership of the smart contract. Now
-that the schema definition file exists, it is up to you to modify it further to reflect
-the requirements of your smart contract.
+The schema definition file has been pre-populated with all sections that you might need, and some functions that allow you to maintain the ownership of the smart contract. Now you can edit this file to reflect the requirements of your smart contract. For now, you can change the value of the `description` field to some different string.
 
-You should use camel case naming convention throughout the schema definition file when
-naming items. Function and variable names always start with a lower case character, and
-type names always start with an upper case character.
+## Generating the Source Code
 
-The first thing you may want to do is to modify the `description` field to something more
-sensible. And if you already know how to use the schema tool, then now is the moment to
-fill out some sections with the definitions you know you will need.
-
-The next step is to go into the new `mysmartcontract` subfolder and run the schema tool
-there to generate the initial code for the desired language:
+Once you are done modifying the schema file, navigate to the `mysmartcontract` subfolder and run the schema tool to generate the smart contract code in your preferred language:
 
 <Tabs defaultValue="go"
       groupId="language"
@@ -141,9 +133,6 @@ there to generate the initial code for the desired language:
       ]}>
 
 <TabItem value="go">
-
-If you want to generate Go code, you should run the schema tool with the
-`-go` option like this:
 
 ```shell
 schema -go
@@ -152,18 +141,12 @@ schema -go
 </TabItem>
 <TabItem value="rust">
 
-If you want to generate Rust code, you should run the schema tool with the
-`-rust` option like this:
-
 ```shell
 schema -rust
 ```
 
 </TabItem>
 <TabItem value="ts">
-
-If you want to generate TypeScript code, you should run the schema tool with the
-`-ts` option like this:
 
 ```shell
 schema -ts
@@ -172,72 +155,17 @@ schema -ts
 </TabItem>
 </Tabs>
 
-If you want to generate more than one language your can simply specify multiple options.
-For example, to generate both Rust and Go code you would specify both options like this:
+You can combine these options to generate the source code for two or more languages:
 
 ```shell
 schema -rust -go
 ```
 
-Note that the schema tool will automatically determine the type of the schema definition
-file (YAML or JSON) by its file extension.
+Note that the schema tool determines the type of the schema definition file (YAML or JSON) by its file extension.
 
-The schema tool will generate a complete set of source files for the desired language(s),
-that will compile successfully into a Wasm code file. You compile these as follows:
+The schema tool will generate a complete set of source files for the desired language. 
 
-<Tabs defaultValue="go"
-      groupId="language"
-      values={[
-          {label: 'Go', value: 'go'},
-          {label: 'Rust', value: 'rust'},
-          {label: 'TypeScript', value: 'ts'},
-      ]}>
-
-<TabItem value="go">
-
-```shell
-tinygo build -target wasm wasmmain/main.go
-```
-
-This will use the Go source files in the current folder. The only file in this folder that
-you should edit manually is `mysmartcontract.go`. All other files will be regenerated and
-overwritten whenever the schema tool is run again.
-
-</TabItem>
-<TabItem value="rust">
-
-After generating the Rust code, you should first modify the Cargo.toml file to your
-liking, and potentially add the new project to a Rust workspace. Cargo.toml will not be
-regenerated once it already exists. Then build the code as follows:
-
-```shell
-wasm-pack build
-```
-
-This will use the `src` subfolder that contains all Rust source files. The only file in
-this folder that you should edit manually is `mysmartcontract.rs`. All other files will be
-regenerated and overwritten whenever the schema tool is run again.
-
-</TabItem>
-<TabItem value="ts">
-
-```shell
-asc lib.ts --binaryFile output_ts.wasm --lib path/to/node_modules
-```
-
-This will use the TypeScript source files in the current folder. The only file in this
-folder that you should edit manually is `mysmartcontract.ts`. All other files will be
-regenerated and overwritten whenever the schema tool is run again.
-
-</TabItem>
-</Tabs>
-
-The generated code is essentially identical for each language, barring some language
-idiosyncrasy differences. Just view different language files with the same name next to,
-each other, and you will see what we mean.
-
-Here is an example of the initially generated code, `mysmartcontract.xx`
-looks like this before you even start modifying it:
+The generated code is practically identical for all languages. Here is an example of a `mysmartcontract.xx` file for every language:
 
 <Tabs defaultValue="go"
       groupId="language"
@@ -324,20 +252,87 @@ export function viewGetOwner(ctx: wasmlib.ScViewContext, f: sc.GetOwnerContext):
 </TabItem>
 </Tabs>
 
-As you can see the schema tool generated an initial working version of the functions that
-are used to maintain the smart contract owner that will suffice for most cases.
+The schema tool has generated a working version of functions that are used to maintain the smart contract owner. This implementation suffices for most cases.
 
-For a smooth building experience it is a good idea to set up a build rule in your build
-environment that runs the schema tool with the required parameters whenever the schema
-definition file changes. That way regeneration of files is automatic, and you no longer
-have to start the schema tool manually each time after changing the schema definition
-file. The schema tool will only regenerate the code when it finds that the schema
-definition file has been modified since the last time it generated the code. You can force
-the schema tool to regenerate all code by adding the `-force` flag to its command line
-parameter.
+You can set up your build environment to run the code generation command every time it detects a change in the schema file. This way you would not need to run this command every time manually.
 
-In the next section we will look at how a smart contract uses
-[Structured Data Types](structs.mdx).
+By default, the schema tool ignores subsequent code generation commands if it does not detect any change in the schema file. If, say, your code project got corrupted and you need to regenerate the source files, you can override this behavior by adding the `-force` option:
+
+<Tabs defaultValue="go"
+      groupId="language"
+      values={[
+          {label: 'Go', value: 'go'},
+          {label: 'Rust', value: 'rust'},
+          {label: 'TypeScript', value: 'ts'},
+      ]}>
+
+<TabItem value="go">
+
+```shell
+schema -go -force
+```
+
+</TabItem>
+<TabItem value="rust">
+
+```shell
+schema -rust -force
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```shell
+schema -ts -force
+```
+
+</TabItem>
+</Tabs>
+
+## Compiling
+
+To compile your smart contract project into a Wasp code file, follow these instructions:
+
+<Tabs defaultValue="go"
+      groupId="language"
+      values={[
+          {label: 'Go', value: 'go'},
+          {label: 'Rust', value: 'rust'},
+          {label: 'TypeScript', value: 'ts'},
+      ]}>
+
+<TabItem value="go">
+
+```shell
+tinygo build -target wasm wasmmain/main.go
+```
+
+This will use the Go source files in the current folder. The only file in this folder that you should edit manually is `mysmartcontract.go`. All other files are regenerated and overwritten each time you run the schema tool.
+
+</TabItem>
+<TabItem value="rust">
+
+Before compiling, modify the `Cargo.toml` file to your needs, and add the new project to a Rust workspace if necessary. `Cargo.toml` will not be regenerated once it already exists. 
+
+Then compile the code as follows:
+
+```shell
+wasm-pack build
+```
+
+This will use the `src` subfolder that contains all Rust source files. The only file in this folder that you should edit manually is `mysmartcontract.rs`. All other files are regenerated and overwritten each time you run the schema tool.
+
+</TabItem>
+<TabItem value="ts">
+
+```shell
+asc lib.ts --binaryFile output_ts.wasm --lib path/to/node_modules
+```
+
+This will use the TypeScript source files in the current folder. The only file in this folder that you should edit manually is `mysmartcontract.ts`. All other files are regenerated and overwritten each time you run the schema tool.
+
+</TabItem>
+</Tabs>
 
 ## Video Tutorial
 
