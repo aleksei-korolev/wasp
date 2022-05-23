@@ -32,14 +32,14 @@ Say, you create a betting smart contract that needs to store information for eac
 {
   "structs": {
     "Bet": {
-      "amount": "Int64 // bet amount",
-      "time": "Int64 // timestamp of this bet",
-      "number": "Int32 // number the we bet on",
-      "better": "AgentID // Who placed this bet"
+      "amount": "Int64 // The bet amount.",
+      "time": "Int64 // The timestamp of the bet.",
+      "number": "Int32 // The number that the user had bet on.",
+      "better": "AgentID // The user who has placed this bet."
     }
   },
   "state": {
-    "bets": "Bet[] // all bets made in this round"
+    "bets": "Bet[] // All bets that were made in this round."
   }
 }
 ```
@@ -51,10 +51,10 @@ Say, you create a betting smart contract that needs to store information for eac
 ```yaml
 structs:
   Bet:
-    amount: Int64 // bet amount
-    time: Int64 // timestamp of this bet
-    number: Int32 // number that we bet on
-    better: AgentID // Who placed this bet
+    amount: Int64 // The bet amount.
+    time: Int64 // The timestamp of the bet.
+    number: Int32 // The number that the user had bet on.
+    better: AgentID // The user who has placed this bet.
 state:
   bets: Bet[] // all bets made in this round
 ```
